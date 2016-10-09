@@ -1,17 +1,8 @@
 export function Session(uow) {
-  this.deps = {};
   this.uow = uow;
 }
 
 Session.prototype = {
-  get(DependencyClass) {
-    if (!this.deps[DependencyClass]) {
-      this.deps[DependencyClass] = new DependencyClass();
-      this.deps[DependencyClass].session = this;
-    }
-    return this.deps[DependencyClass];
-  },
-
   add(entity) {
     this.uow.registerNew(entity);
   },
