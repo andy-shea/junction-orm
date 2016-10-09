@@ -1,10 +1,9 @@
-const Session = {
-  init(uow) {
-    this.deps = {};
-    this.uow = uow;
-    return this;
-  },
+export function Session(uow) {
+  this.deps = {};
+  this.uow = uow;
+}
 
+Session.prototype = {
   get(DependencyClass) {
     if (!this.deps[DependencyClass]) {
       this.deps[DependencyClass] = new DependencyClass();
@@ -40,7 +39,7 @@ const Session = {
 };
 
 function startSession(uow) {
-  return Object.create(Session).init(uow);
+  return new Session(uow);
 }
 
 export default startSession;

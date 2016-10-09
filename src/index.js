@@ -1,7 +1,7 @@
-import createEntityManager from './createEntityManager';
+import entityManager from './entityManager';
 
 function junction(entities, mapper) {
-  return createEntityManager(entities, mapper);
+  return entityManager(entities, mapper);
 }
 
 export default junction;

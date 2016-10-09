@@ -125,8 +125,8 @@ const UnitOfWork = {
   }
 };
 
-function createUnitOfWork(entities, mapper) {
+function unitOfWork(entities, mapper) {
   return Object.create(UnitOfWork).init(entities, mapper);
 }
 
-export default createUnitOfWork;
+export default unitOfWork;

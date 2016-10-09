@@ -1,5 +1,5 @@
 import testWithProvision from 'tape-pencil';
-import createUnitOfWork from '../src/createUnitOfWork';
+import createUnitOfWork from '../src/unitOfWork';
 
 class Test {
   constructor(id) {
