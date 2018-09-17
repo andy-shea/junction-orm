@@ -10,11 +10,16 @@
     "url": "git://github.com/andy-shea/junction-orm"
   },
   "homepage": "https://github.com/andy-shea/junction-orm",
+  "browserslist": [
+    "ie >= 11"
+  ],
   "scripts": {
-    "test": "tape -r babel-register 'tests/**/*.js'",
-    "prebuild": "npm test",
-    "build": "babel src -d lib",
-    "prepublish": "npm run build"
+    "build": "babel --extensions '.ts' src -d lib && yarn types:build",
+    "prepublish": "yarn build",
+    "test": "tape -r ts-node/register 'tests/**/*.js'",
+    "prebuild": "yarn test",
+    "types:build": "tsc --emitDeclarationOnly --allowJs false",
+    "types:check": "tsc --noEmit"
   },
   "keywords": [
     "orm",
@@ -23,11 +28,16 @@
     "mapper"
   ],
   "devDependencies": {
-    "babel-cli": "^6.14.0",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-es2015": "^6.14.0",
-    "babel-register": "^6.14.0",
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.1",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-typescript": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "@types/node": "^10.9.4",
     "tape": "^4.6.0",
-    "tape-pencil": "^0.1.1"
+    "tape-pencil": "^1.0.1",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.0.3"
   }
 }

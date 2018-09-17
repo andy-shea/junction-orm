@@ -1,6 +1,7 @@
 import {inspect} from 'util';
+import Mapper from './mapper';
 
-const mapper = {
+const mapper: Mapper = {
   insert(entityMap) {
     console.log('INSERT: ', inspect(entityMap, false, null));
     return Promise.resolve({});

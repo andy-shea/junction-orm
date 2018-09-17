@@ -1,15 +1,21 @@
-function observeElements(schema, collection, observeEntity) {
+import {Entity, ElementCollectionType} from '../Entity';
+import EntityObserver from './EntityObserver';
+
+function observeElements(type: ElementCollectionType, collection: any[]) {
   // entity types are root aggregates so not interested in tracking updates via collection, they will be tracked elsewhere
-  return schema.element.schema.type === 'entity' ? [] : collection.map((element, index) => {
-    const observer = observeEntity(schema.element.schema, element);
+  const schema = (<any>type.element).schema;
+  return schema.type === 'entity' ? [] : collection.map((element: any, index: number) => {
+    const observer = new EntityObserver(schema, element);
     collection[index] = observer.proxy;
     return observer;
   })
 }
 
-function createProxy(collection, addElement, removeElement) {
+type TrackElementHandler = (element: Entity) => void;
+
+function createProxy(collection: any[], addElement: TrackElementHandler, removeElement: TrackElementHandler) {
   return new Proxy(collection, {
-    set: (target, index, value) => {
+    set: (target: any, index: number | string, value) => {
       const element = target[index];
       if (index !== 'length') {
         if (index in target && element !== value) removeElement(element);
@@ -25,37 +31,39 @@ function createProxy(collection, addElement, removeElement) {
   });
 }
 
-const CollectionObserver = {
-  init(schema, collection) {
-    if (!schema || !collection) throw Error('Schema and collection must be provided');
-    this.added = [];
-    this.removed = [];
-    this.elements = observeElements(schema, collection, require('./observeEntity'));
-    this.proxy = createProxy(collection, this.addElement.bind(this), this.removeElement.bind(this));
-    return this;
-  },
+class CollectionObserver {
 
-  addElement(value) {
+  private elements: EntityObserver[];
+  public proxy: [];
+  private added: Entity[] = [];
+  private removed: Entity[] = [];
+
+  constructor(type: ElementCollectionType, collection: []) {
+    this.elements = observeElements(type, collection);
+    this.proxy = createProxy(collection, this.addElement.bind(this), this.removeElement.bind(this));
+  }
+
+  addElement(value: Entity) {
     const removedIndex = this.removed.indexOf(value);
     if (removedIndex !== -1) this.removed.splice(removedIndex, 1);
     else this.added.push(value);
-  },
+  }
 
-  removeElement(element) {
+  removeElement(element: Entity) {
     const addedIndex = this.added.indexOf(element);
     if (addedIndex !== -1) this.added.splice(addedIndex, 1);
     else this.removed.push(element);
-  },
+  }
 
   isDirty() {
     return !!(this.added.length + this.removed.length + this.elements.filter(observer => observer.isDirty()).length);
-  },
+  }
 
   clear() {
     this.added = [];
     this.removed = [];
     this.elements.forEach(observer => observer.clear());
-  },
+  }
 
   changed() {
     return {
@@ -64,10 +72,7 @@ const CollectionObserver = {
       removed: this.removed
     };
   }
-};
 
-function observeCollection(schema, collection) {
-  return Object.create(CollectionObserver).init(schema, collection);
 }
 
-export default observeCollection;
+export default CollectionObserver;
