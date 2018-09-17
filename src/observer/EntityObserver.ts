@@ -36,7 +36,7 @@ function createProxy(entity: Entity, dirtyProps: Set<string>) {
 class EntityObserver {
 
   private dirtyProps = new Set<string>();
-  private collections: CollectionObserverMap = {};
+  public collections: CollectionObserverMap = {};
   public proxy: Entity;
 
   constructor(schema: Schema, public entity: Entity) {

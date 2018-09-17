@@ -5,6 +5,8 @@ export enum SchemaTypes {
 
 interface PropertyType {
   type?: string | EntityType<Entity>;
+  column?: string;
+  isRequired?: boolean;
 }
 
 interface Properties {
@@ -29,6 +31,7 @@ export interface Schema {
   type: SchemaTypes;
   props: Properties;
   collections?: CollectionsMap;
+  timestampable?: boolean
 }
 
 export interface Entity {

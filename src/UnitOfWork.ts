@@ -1,16 +1,16 @@
 import {EntityType, Entity, Schema} from './Entity';
 import EntityObserver from './observer/EntityObserver';
-import Mapper from './mapper/mapper';
+import {Mapper} from './mapper/Mapper';
 
 function getEntityType(entity: Entity) {
   return entity.constructor.name;
 }
 
-interface DirtyEntities {
+export interface DirtyEntities {
   [type: string]: Entity[]
 }
 
-interface DirtyObservers {
+export interface DirtyObservers {
   [type: string]: EntityObserver[]
 }
 

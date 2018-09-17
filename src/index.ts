@@ -1,5 +1,5 @@
 import EntityManager from './EntityManager';
-import Mapper from './mapper/mapper';
+import {Mapper} from './mapper/Mapper';
 import {EntityType, Entity} from './Entity';
 
 function junction(entities: EntityType<Entity>[], mapper: Mapper) {

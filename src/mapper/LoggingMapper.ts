@@ -1,5 +1,5 @@
 import {inspect} from 'util';
-import Mapper from './mapper';
+import {Mapper} from './Mapper';
 
 const mapper: Mapper = {
   insert(entityMap) {

@@ -1,7 +1,7 @@
 import {EntityType, Entity} from './Entity';
 import Session from './Session';
 import UnitOfWork from './UnitOfWork';
-import Mapper from './mapper/mapper';
+import {Mapper} from './mapper/Mapper';
 
 class EntityManager {
 
