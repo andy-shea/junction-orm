@@ -35,8 +35,8 @@ class CollectionObserver {
 
   private elements: EntityObserver[];
   public proxy: [];
-  private added: Entity[] = [];
-  private removed: Entity[] = [];
+  public added: Entity[] = [];
+  public removed: Entity[] = [];
 
   constructor(type: ElementCollectionType, collection: []) {
     this.elements = observeElements(type, collection);
